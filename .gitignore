@@ -1,0 +1,46 @@
+# .NET build output
+**/bin/
+**/obj/
+
+# MSBuild / NuGet
+*.rsuser
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.pidb
+*.svclog
+*.log
+*.cache
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# NuGet packages (usually not committed)
+*.nupkg
+*.snupkg
+packages/
+
+# Visual Studio
+.vs/
+
+# VS Code
+.vscode/
+
+# JetBrains Rider / IntelliJ
+.idea/
+*.sln.iml
+
+# OS / tooling
+.DS_Store
+Thumbs.db
+
+# Test results / coverage
+TestResults/
+*.coverage
+*.coveragexml
+coverage/
+
+# Local environment files
+.env
+.env.*
