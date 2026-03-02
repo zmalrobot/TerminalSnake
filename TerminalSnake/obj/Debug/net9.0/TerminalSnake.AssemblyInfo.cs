@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TerminalSnake")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cc68bd16f853799f0d72d34d60a7269bbb93a56b")]
 [assembly: System.Reflection.AssemblyProductAttribute("TerminalSnake")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TerminalSnake")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

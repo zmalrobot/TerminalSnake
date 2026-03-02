@@ -22,3 +22,15 @@ D:/Sync/Repos/ConsoleGame/RenderEngine/obj/Debug/net9.0/ref/RenderEngine.dll
 /mnt/md0/Repos/ConsoleGame/RenderEngine/obj/Debug/net9.0/refint/RenderEngine.dll
 /mnt/md0/Repos/ConsoleGame/RenderEngine/obj/Debug/net9.0/RenderEngine.pdb
 /mnt/md0/Repos/ConsoleGame/RenderEngine/obj/Debug/net9.0/ref/RenderEngine.dll
+/mnt/md0/Repos/TerminalSnake/RenderEngine/bin/Debug/net9.0/RenderEngine.deps.json
+/mnt/md0/Repos/TerminalSnake/RenderEngine/bin/Debug/net9.0/RenderEngine.dll
+/mnt/md0/Repos/TerminalSnake/RenderEngine/bin/Debug/net9.0/RenderEngine.pdb
+/mnt/md0/Repos/TerminalSnake/RenderEngine/obj/Debug/net9.0/RenderEngine.csproj.AssemblyReference.cache
+/mnt/md0/Repos/TerminalSnake/RenderEngine/obj/Debug/net9.0/RenderEngine.GeneratedMSBuildEditorConfig.editorconfig
+/mnt/md0/Repos/TerminalSnake/RenderEngine/obj/Debug/net9.0/RenderEngine.AssemblyInfoInputs.cache
+/mnt/md0/Repos/TerminalSnake/RenderEngine/obj/Debug/net9.0/RenderEngine.AssemblyInfo.cs
+/mnt/md0/Repos/TerminalSnake/RenderEngine/obj/Debug/net9.0/RenderEngine.csproj.CoreCompileInputs.cache
+/mnt/md0/Repos/TerminalSnake/RenderEngine/obj/Debug/net9.0/RenderEngine.dll
+/mnt/md0/Repos/TerminalSnake/RenderEngine/obj/Debug/net9.0/refint/RenderEngine.dll
+/mnt/md0/Repos/TerminalSnake/RenderEngine/obj/Debug/net9.0/RenderEngine.pdb
+/mnt/md0/Repos/TerminalSnake/RenderEngine/obj/Debug/net9.0/ref/RenderEngine.dll
