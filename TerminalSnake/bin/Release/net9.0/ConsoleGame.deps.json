@@ -1,0 +1,73 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "ConsoleGame/1.0.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.4",
+          "RenderEngine": "1.0.0"
+        },
+        "runtime": {
+          "ConsoleGame.dll": {}
+        }
+      },
+      "Newtonsoft.Json/13.0.4": {
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.4.30916"
+          }
+        }
+      },
+      "Pastel/7.0.0": {
+        "runtime": {
+          "lib/net9.0/Pastel.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "RenderEngine/1.0.0": {
+        "dependencies": {
+          "Pastel": "7.0.0"
+        },
+        "runtime": {
+          "RenderEngine.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ConsoleGame/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Newtonsoft.Json/13.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pdgNNMai3zv51W5aq268sujXUyx7SNdE2bj1wZcWjAQrKMFZV260lbqYop1d2GM67JI1huLRwxo9ZqnfF/lC6A==",
+      "path": "newtonsoft.json/13.0.4",
+      "hashPath": "newtonsoft.json.13.0.4.nupkg.sha512"
+    },
+    "Pastel/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-g/3vT1ggvAvWq2bw9RagpyPYHnppKs+F4xw3P8cniSNRAUvtjO3/MHETTbzvXqGkZ18GoZA6xW5Zfh33jYiWLg==",
+      "path": "pastel/7.0.0",
+      "hashPath": "pastel.7.0.0.nupkg.sha512"
+    },
+    "RenderEngine/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

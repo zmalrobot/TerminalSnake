@@ -1,0 +1,12 @@
+D:\Sync\Repos\ConsoleGame\RenderEngine\bin\Release\net9.0\RenderEngine.deps.json
+D:\Sync\Repos\ConsoleGame\RenderEngine\bin\Release\net9.0\RenderEngine.dll
+D:\Sync\Repos\ConsoleGame\RenderEngine\bin\Release\net9.0\RenderEngine.pdb
+D:\Sync\Repos\ConsoleGame\RenderEngine\obj\Release\net9.0\RenderEngine.csproj.AssemblyReference.cache
+D:\Sync\Repos\ConsoleGame\RenderEngine\obj\Release\net9.0\RenderEngine.GeneratedMSBuildEditorConfig.editorconfig
+D:\Sync\Repos\ConsoleGame\RenderEngine\obj\Release\net9.0\RenderEngine.AssemblyInfoInputs.cache
+D:\Sync\Repos\ConsoleGame\RenderEngine\obj\Release\net9.0\RenderEngine.AssemblyInfo.cs
+D:\Sync\Repos\ConsoleGame\RenderEngine\obj\Release\net9.0\RenderEngine.csproj.CoreCompileInputs.cache
+D:\Sync\Repos\ConsoleGame\RenderEngine\obj\Release\net9.0\RenderEngine.dll
+D:\Sync\Repos\ConsoleGame\RenderEngine\obj\Release\net9.0\refint\RenderEngine.dll
+D:\Sync\Repos\ConsoleGame\RenderEngine\obj\Release\net9.0\RenderEngine.pdb
+D:\Sync\Repos\ConsoleGame\RenderEngine\obj\Release\net9.0\ref\RenderEngine.dll
