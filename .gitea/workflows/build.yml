@@ -8,20 +8,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
-    env:
-      DOTNET_CLI_TELEMETRY_OPTOUT: 1
-      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '9.x'
+        run: git clone http://127.0.0.1:3000/s.marzola/TerminalSnake.git
+        # optionally, checkout correct branch:
+        run: git checkout main
 
       - name: Restore dependencies
         run: dotnet restore
