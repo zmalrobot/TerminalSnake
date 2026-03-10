@@ -12,9 +12,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      - name: Check out repository code
-        uses: actions/checkout@v4
+      - name: Checkout repository manually
+        run: |
+          git clone http://127.0.0.1:3000/s.marzola/TerminalSnake.git .
+          git checkout main
 
       - name: Restore dependencies
         run: dotnet restore
