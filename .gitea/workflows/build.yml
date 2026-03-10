@@ -13,8 +13,6 @@ jobs:
 
     steps:
 
-      - run: echo "Build TerminalSnake triggered by ${{ gitea.event_name }} event."
-      
       - name: Check out repository code
         uses: actions/checkout@v4
 
