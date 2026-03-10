@@ -44,3 +44,19 @@ coverage/
 # Local environment files
 .env
 .env.*
+
+# Ignore publish output
+publish/
+# Ignore temporary files
+*.swp
+*.tmp
+# Ignore Python virtual environments (if any)
+venv/
+ENV/
+# Ignore local settings
+local.settings.json
+# Ignore build artifacts
+*.dll
+*.exe
+*.pdb
+*.mdb
