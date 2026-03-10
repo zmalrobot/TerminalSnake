@@ -8,12 +8,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         run: git clone http://127.0.0.1:3000/s.marzola/TerminalSnake.git
-        # optionally, checkout correct branch:
+
+      - name: Checkout main
         run: git checkout main
 
       - name: Restore dependencies
