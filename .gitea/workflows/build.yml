@@ -1,4 +1,5 @@
 name: Build TerminalSnake
+run-name: ${{ gitea.actor }} Build TerminalSnake
 
 on:
   push:
@@ -11,8 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+
+      - run: echo "Build TerminalSnake triggered by ${{ gitea.event_name }} event."
+      
+      - name: Check out repository code
+        uses: actions/checkout@v4
 
       - name: Restore dependencies
         run: dotnet restore
