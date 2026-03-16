@@ -14,9 +14,10 @@ namespace TerminalSnake
     {
         static BackgoundMusic   _backgoundMusic = null!;
         static ConsoleConfig    _consoleConfig  = null!;
-        static ConsoleRender    _consoleRender  = null!;
-        static ConsoleOut       _consoleOut     = null!;
-        static IConsoleOutput   _display        = null!;
+        static IConsoleRender   _renderer       = null!;
+        static IConsoleOutput   _titleDisplay   = null!;   // used for title/selection screens
+        static IConsoleOutput   _display        = null!;   // renderer-matched, used in-game
+        static IConsoleOutput   _consoleOut     = null!;   // debug output (disabled)
         static PlayerDto        _player         = null!;
         static EnemyDto         _enemy          = null!;
         static List<IGameLogic> _gameLogics     = null!;
@@ -36,7 +37,11 @@ namespace TerminalSnake
 
                 while (true)
                 {
-                    TitleScreen.ShowTitle(_display);
+                    _renderer = TitleScreen.ShowTitle(_titleDisplay);
+                    // Create an output implementation that matches the chosen renderer.
+                    _display  = _renderer is SpectreConsoleRender
+                                    ? (IConsoleOutput)new ConsoleOutSpectre()
+                                    : new ConsoleOut(_consoleConfig, true);
                     InitGame();
                     RunGame();
                     ScoreManager.SaveScore(_player.points);
@@ -62,7 +67,7 @@ namespace TerminalSnake
         {
             _consoleConfig = new ConsoleConfig();
             _consoleOut    = new ConsoleOut(_consoleConfig, false);
-            _display       = new ConsoleOut(_consoleConfig, true);
+            _titleDisplay  = new ConsoleOut(_consoleConfig, true);
 
             _backgoundMusic = new BackgoundMusic();
             _backgoundMusic.Play();
@@ -75,10 +80,8 @@ namespace TerminalSnake
             // if the window was resized between rounds (or before the first round).
             _consoleConfig = new ConsoleConfig();
             _consoleOut    = new ConsoleOut(_consoleConfig, false);
-            _display       = new ConsoleOut(_consoleConfig, true);
 
-            _consoleRender = new ConsoleRender(_consoleConfig, _display);
-            _consoleRender.InitalizeRender();
+            _renderer.Initialize(_consoleConfig, _display);
 
             _player    = new PlayerDto();
             _enemy     = new EnemyDto();
@@ -92,12 +95,12 @@ namespace TerminalSnake
                 if (instance != null)
                 {
                     instance.Initialize(_consoleConfig, _consoleOut,
-                                        _consoleRender.GetRenderMatrix(), _player, _enemy);
+                                        _renderer.GetRenderMatrix(), _player, _enemy);
                     _gameLogics.Add(instance);
                 }
             }
 
-            _consoleRender.Clean();
+            _renderer.Clean();
         }
 
         // Main game loop – runs until the player dies.
@@ -130,7 +133,7 @@ namespace TerminalSnake
                 };
 #endif*/
 
-                _consoleRender.Render(headers, debugData);
+                _renderer.Render(headers, debugData);
                 _gameLogics.ForEach(x => x.AfterRender());
 
                 // Sleep for the remaining time until the next frame deadline.

@@ -23,7 +23,7 @@ namespace TerminalSnake.GameLogic
         public string Name => "PlayerLogic";
         private ConsoleRenderObj[,] _renderMatrix;
         private ConsoleConfig _consoleConfig;
-        private ConsoleOut _consoleOut;
+        private IConsoleOutput _output;
         private PlayerDto _prev;
         private PlayerDto _current;
         private EnemyDto _enemy;
@@ -31,10 +31,10 @@ namespace TerminalSnake.GameLogic
 
         private bool canAceptInput = true;
 
-        public void Initialize(ConsoleConfig consoleConfig, ConsoleOut consoleOut, ConsoleRenderObj[,] renderMatrix, PlayerDto player, EnemyDto enemy)
+        public void Initialize(ConsoleConfig consoleConfig, IConsoleOutput output, ConsoleRenderObj[,] renderMatrix, PlayerDto player, EnemyDto enemy)
         {
             _consoleConfig = consoleConfig;
-            _consoleOut = consoleOut;
+            _output = output;
             _renderMatrix = renderMatrix;
             _current = player;
             _enemy = enemy;
@@ -163,25 +163,16 @@ namespace TerminalSnake.GameLogic
         private void UpdateBodyPosition()
         {
             foreach (var body in _prev.playerBodies)
-            {
-                _renderMatrix[body.pos_row, body.pos_col].color = ConsoleColors.Black;
-                _renderMatrix[body.pos_row, body.pos_col].character = ' ';
-            }
+                _renderMatrix[body.pos_row, body.pos_col].Type = CellType.Empty;
 
             foreach (var body in _current.playerBodies)
-            {
-                _renderMatrix[body.pos_row, body.pos_col].color = body.body_color;
-                _renderMatrix[body.pos_row, body.pos_col].character = body.body_char;
-            }
-
+                _renderMatrix[body.pos_row, body.pos_col].Type = CellType.Body;
         }
+
         private void UpdatePlayerPosition()
         {
-            _renderMatrix[_prev.pos_row, _prev.pos_col].color = ConsoleColors.Black;
-            _renderMatrix[_prev.pos_row, _prev.pos_col].character = ' ';
-
-            _renderMatrix[_current.pos_row, _current.pos_col].color = _current.player_color;
-            _renderMatrix[_current.pos_row, _current.pos_col].character = _current.player_char;
+            _renderMatrix[_prev.pos_row, _prev.pos_col].Type    = CellType.Empty;
+            _renderMatrix[_current.pos_row, _current.pos_col].Type = CellType.Head;
         }
 
       

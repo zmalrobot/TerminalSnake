@@ -1,4 +1,5 @@
 using TerminalSnake.Util;
+using TerminalSnake.Rendering;
 
 namespace TerminalSnake
 {
@@ -13,7 +14,7 @@ namespace TerminalSnake
             @" |____/|_| \_/_/   \_\_|\_\|_____| ",
         };
 
-        public static void ShowTitle(IConsoleOutput output)
+        public static IConsoleRender ShowTitle(IConsoleOutput output)
         {
             AnsiClear(output);
             int w = GetWidth();
@@ -42,13 +43,32 @@ namespace TerminalSnake
             }
             lines.Add(("╚══════════════════════════╝", ConsoleColor.Yellow));
             lines.Add(("", ConsoleColor.White));
-            lines.Add((">>> Press any key to start <<<", ConsoleColor.Cyan));
+            lines.Add(("Choose a renderer:", ConsoleColor.Cyan));
+            lines.Add(("  [1]  Standard     – classic ASCII box-drawing", ConsoleColor.White));
+            lines.Add(("  [2]  Alternative  – heavy lines, neon-cyan palette", ConsoleColor.White));
+            lines.Add(("  [3]  Spectre      – bold blocks, purple/magenta palette", ConsoleColor.White));
 
             RenderCenteredLines(lines, w, h, output);
 
             output.ResetColor();
             FlushInput();
-            Console.ReadKey(true);
+
+            while (true)
+            {
+                var key = Console.ReadKey(true);
+                switch (key.Key)
+                {
+                    case ConsoleKey.D1:
+                    case ConsoleKey.NumPad1:
+                        return new StandardConsoleRender();
+                    case ConsoleKey.D2:
+                    case ConsoleKey.NumPad2:
+                        return new AlternativeConsoleRender();
+                    case ConsoleKey.D3:
+                    case ConsoleKey.NumPad3:
+                        return new SpectreConsoleRender();
+                }
+            }
         }
 
         public static void ShowGameOver(int score, IConsoleOutput output)

@@ -14,7 +14,7 @@ namespace TerminalSnake.GameLogic
     {
         public string Name { get; }
 
-        public void Initialize(ConsoleConfig consoleConfig, ConsoleOut consoleOut, ConsoleRenderObj[,] renderMatrix, PlayerDto player, EnemyDto enemy);
+        public void Initialize(ConsoleConfig consoleConfig, IConsoleOutput output, ConsoleRenderObj[,] renderMatrix, PlayerDto player, EnemyDto enemy);
         public void BeforeRender();
         public void AfterRender();
     }

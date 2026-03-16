@@ -11,9 +11,6 @@ namespace TerminalSnake.Dto
         public int pos_row { get; set; } = 5;
         public int pos_col { get; set; } = 5;
 
-        public char player_char { get; set; } = '■';
-        public ConsoleColors player_color { get; set; } = ConsoleColors.Green;
-
         public MovmentDirection movmentDirection { get; set; }
 
         public List<PlayerBody> playerBodies { get; set; } = new List<PlayerBody>();
@@ -42,8 +39,6 @@ namespace TerminalSnake.Dto
     {
         public int pos_row { get; set; } = 1;
         public int pos_col { get; set; } = 1;
-        public char body_char { get; set; } = '≡';
-        public ConsoleColors body_color { get; set; } = ConsoleColors.Green;
     }
 
     public enum MovmentDirection

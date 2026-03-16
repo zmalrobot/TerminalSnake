@@ -1,56 +1,37 @@
 ﻿using TerminalSnake.Dto;
 using TerminalSnake.Rendering;
 using TerminalSnake.Util;
-using Newtonsoft.Json;
 using RenderEngine.Dto;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace TerminalSnake.GameLogic
 {
     public class EnemyLogic : IGameLogic
     {
         public string Name => "EnemyLogic";
-        private ConsoleRenderObj _renderMatrixPrev;
-        private ConsoleRenderObj[,] _renderMatrix;
-        private ConsoleConfig _consoleConfig;
-        private ConsoleOut _consoleOut;
-        private PlayerDto _player;
-        private EnemyDto _enemy;
-        private PlayerDto _enemyPlayer;
 
-        private Random _random;
+        private ConsoleRenderObj[,] _renderMatrix = null!;
+        private ConsoleConfig       _consoleConfig = null!;
+        private PlayerDto           _player = null!;
+        private EnemyDto            _enemy  = null!;
+        private Random              _random = null!;
 
-        public void Initialize(ConsoleConfig consoleConfig, ConsoleOut consoleOut, ConsoleRenderObj[,] renderMatrix, PlayerDto player, EnemyDto enemy)
+        public void Initialize(ConsoleConfig consoleConfig, IConsoleOutput output,
+                               ConsoleRenderObj[,] renderMatrix, PlayerDto player, EnemyDto enemy)
         {
             _consoleConfig = consoleConfig;
-            _consoleOut = consoleOut;
-            _renderMatrix = renderMatrix;
-            _player = player;
-            _enemy = enemy;
-            _random = new Random();
-
-            _renderMatrixPrev = JsonConvert.DeserializeObject<ConsoleRenderObj>(JsonConvert.SerializeObject(_renderMatrix[1, 1]));
+            _renderMatrix  = renderMatrix;
+            _player        = player;
+            _enemy         = enemy;
+            _random        = new Random();
         }
 
         public void BeforeRender()
         {
-            if(!_enemy.isActive)
-            {
-                SpawnNewEnemy(); //Iizio del gioco
-            }
+            if (!_enemy.isActive)
+                SpawnNewEnemy();
             else
-            {
-                _renderMatrix[_enemy.pos_row, _enemy.pos_col].color = _enemy.enemy_color;
-                _renderMatrix[_enemy.pos_row, _enemy.pos_col].character = _enemy.enemy_char;
-            }            
+                _renderMatrix[_enemy.pos_row, _enemy.pos_col].Type = CellType.Enemy;
         }
 
         public void AfterRender()
@@ -59,7 +40,6 @@ namespace TerminalSnake.GameLogic
             {
                 _player.AddScore(_enemy.point);
                 _player.AddBody();
-
                 _enemy.isActive = false;
                 SpawnNewEnemy();
             }
@@ -67,59 +47,52 @@ namespace TerminalSnake.GameLogic
 
         private void SpawnNewEnemy()
         {
-            if (!_enemy.isActive)
+            if (_enemy.isActive) return;
+
+            var randomPosR = _random.Next(1, _consoleConfig.n_row    - 2);
+            var randomPosC = _random.Next(1, _consoleConfig.n_column - 2);
+
+            if (!IsPositionOk(randomPosR, randomPosC))
             {
-                var randomPosR = _random.Next(1, _consoleConfig.n_row - 2);
-                var randomPosC = _random.Next(1, _consoleConfig.n_column - 2);
-
-                if(!IsPositionOk(randomPosR, randomPosC))
-                {
-                    SpawnNewEnemy();
-                    return;
-                }
-
-                
-                _renderMatrix[_enemy.pos_row, _enemy.pos_col].color = _renderMatrixPrev.color;
-                _renderMatrix[_enemy.pos_row, _enemy.pos_col].character = _renderMatrixPrev.character;
-                               
-
-                _renderMatrixPrev = JsonConvert.DeserializeObject<ConsoleRenderObj>(JsonConvert.SerializeObject(_renderMatrix[randomPosR, randomPosC]));
-                _enemy.pos_row = randomPosR;
-                _enemy.pos_col = randomPosC;
-                _enemy.isActive = true;
+                SpawnNewEnemy();
+                return;
             }
+
+            // The enemy always occupies an interior (non-wall, non-player) cell,
+            // so clearing the old position to Empty is always safe.
+            _renderMatrix[_enemy.pos_row, _enemy.pos_col].Type = CellType.Empty;
+
+            _enemy.pos_row  = randomPosR;
+            _enemy.pos_col  = randomPosC;
+            _enemy.isActive = true;
+
+            _renderMatrix[_enemy.pos_row, _enemy.pos_col].Type = CellType.Enemy;
         }
 
         private bool IsPositionOk(int row, int col)
-        {            
+        {
             if (row == _player.pos_row && col == _player.pos_col)
                 return false;
 
-            foreach(var element in _player.playerBodies)
-            {
+            foreach (var element in _player.playerBodies)
                 if (row == element.pos_row && col == element.pos_col)
                     return false;
-            }
 
             return true;
         }
 
         private bool IsPlayerColliding()
         {
-            if(_enemy == null)
-                return false;
+            if (_enemy == null) return false;
 
             if (_enemy.pos_row == _player.pos_row && _enemy.pos_col == _player.pos_col)
                 return true;
 
             foreach (var element in _player.playerBodies)
-            {
                 if (_enemy.pos_row == element.pos_row && _enemy.pos_col == element.pos_col)
                     return true;
-            }
 
             return false;
         }
-
     }
 }
