@@ -1,0 +1,53 @@
+name: Release TerminalSnake
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. 1.2.3)'
+        required: true
+        default: '1.0.0'
+
+jobs:
+  release:
+    runs-on: linux64-latest
+
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:9.0
+
+    steps:
+      - name: Install tools
+        run: apt-get update -qq && apt-get install -y nodejs
+
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Run tests
+        run: dotnet test TerminalSnake.Tests/TerminalSnake.Tests.csproj -c Release --no-restore /p:Version=${{ inputs.version }} --logger "console;verbosity=normal"
+
+      - name: Publish (linux-x64 single file)
+        run: >
+          dotnet publish TerminalSnake/TerminalSnake.csproj
+          -c Release
+          -r linux-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:Version=${{ inputs.version }}
+          --no-restore
+          -o ./publish
+
+      - name: Create archive
+        run: tar -czf TerminalSnake-v${{ inputs.version }}-linux-x64.tar.gz -C ./publish TerminalSnake
+
+      - name: Create GitHub/Gitea release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          name: "v${{ inputs.version }}"
+          generate_release_notes: true
+          files: TerminalSnake-v${{ inputs.version }}-linux-x64.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

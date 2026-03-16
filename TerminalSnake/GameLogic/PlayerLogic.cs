@@ -123,7 +123,7 @@ namespace TerminalSnake.GameLogic
             UpdatePlayerPosition();
         }
 
-        private void SetNextPlayerPosition(ConsoleConfig consoleConfig, PlayerDto player, int incR = 0, int incC = 0)
+        internal void SetNextPlayerPosition(ConsoleConfig consoleConfig, PlayerDto player, int incR = 0, int incC = 0)
         {
             var nextR = player.pos_row + incR;
             var nextC = player.pos_col + incC;

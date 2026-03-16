@@ -24,5 +24,5 @@ jobs:
       - name: Build solution
         run: dotnet build TerminalSnake.sln -c Debug --no-restore
 
-      #- name: Test project
-      #  run: dotnet test TerminalSnake/TerminalSnake.csproj -c Debug
+      - name: Test project
+        run: dotnet test TerminalSnake.Tests/TerminalSnake.Tests.csproj -c Debug --no-restore --logger "console;verbosity=normal"
