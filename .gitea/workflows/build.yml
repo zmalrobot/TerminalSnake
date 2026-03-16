@@ -8,12 +8,14 @@ jobs:
   build:
     runs-on: linux64-latest
 
-    container:
-      image: mcr.microsoft.com/dotnet/sdk:9.0
-
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
 
       - name: Restore dependencies
         run: dotnet restore
