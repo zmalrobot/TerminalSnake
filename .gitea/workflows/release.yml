@@ -1,0 +1,54 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. 1.0.0)'
+        required: true
+
+jobs:
+  release:
+    runs-on: linux64-latest
+
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:9.0
+
+    steps:
+      - name: Install Node.js and tools
+        run: apt-get update -qq && apt-get install -y nodejs curl jq
+
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build TerminalSnake.sln -c Release --no-restore
+
+      - name: Run unit tests
+        run: dotnet test TerminalSnake.Tests/TerminalSnake.Tests.csproj -c Release --no-restore --logger "console;verbosity=normal"
+
+      - name: Create release
+        env:
+          GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+        run: |
+          RELEASE_URL="${{ github.server_url }}/api/v1/repos/${{ github.repository }}/releases"
+          echo "Creating release at: ${RELEASE_URL}"
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            "${RELEASE_URL}" \
+            -H "Authorization: token ${GITEA_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+              --arg tag "v${{ inputs.version }}" \
+              --arg name "v${{ inputs.version }}" \
+              --arg body "Release v${{ inputs.version }}" \
+              '{tag_name: $tag, name: $name, body: $body, draft: false, prerelease: false}')")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "HTTP ${HTTP_CODE}: ${BODY}"
+          if [ "$HTTP_CODE" -ge 400 ]; then
+            echo "::error::Release creation failed"
+            exit 1
+          fi
