@@ -18,8 +18,8 @@ namespace TerminalSnake.GameLogic
     public class PlayerLogic : IGameLogic
     {
         private Stopwatch _stopwatch;
-        private long _lastMovmentMills;
-        private long _timeDeltaMillis = 1000;
+        private double _lastMovmentMills;
+        private double _timeDeltaMillis = 1000;
         public string Name => "PlayerLogic";
         private ConsoleRenderObj[,] _renderMatrix;
         private ConsoleConfig _consoleConfig;
@@ -39,11 +39,11 @@ namespace TerminalSnake.GameLogic
             _current = player;
             _enemy = enemy;
 
-            _timeDeltaMillis = 1000 / _consoleConfig.target_fps;
+            _timeDeltaMillis = 1000.0 / _consoleConfig.target_fps;
 
             _readKey = new Thread(() =>
             {
-                while (true)
+                while (!player.isDead)
                 {
                     while (Console.KeyAvailable && canAceptInput)
                     {
@@ -72,10 +72,13 @@ namespace TerminalSnake.GameLogic
                         canAceptInput = false;                       
                     }
 
-                    Thread.Sleep(200);
+                    Thread.Sleep((int)_timeDeltaMillis);
                     canAceptInput = true;
                 }
-            });
+            })
+            {
+                IsBackground = true
+            };
             _readKey.Start();
 
             _stopwatch = new Stopwatch();
@@ -88,9 +91,12 @@ namespace TerminalSnake.GameLogic
 
             var currentmillis = _stopwatch.ElapsedMilliseconds;
 
-            if ((currentmillis - _lastMovmentMills) > _timeDeltaMillis)
+            if ((currentmillis - _lastMovmentMills) >= _timeDeltaMillis)
             {
-                _lastMovmentMills = currentmillis;
+                _lastMovmentMills += _timeDeltaMillis;
+                // Resync if we've fallen more than one frame behind.
+                if (currentmillis - _lastMovmentMills > _timeDeltaMillis)
+                    _lastMovmentMills = currentmillis;
 
                 switch (_current.movmentDirection)
                 {
@@ -122,17 +128,25 @@ namespace TerminalSnake.GameLogic
             var nextR = player.pos_row + incR;
             var nextC = player.pos_col + incC;
 
-            if (nextR < 1)
+            // Wall collision → player dies
+            if (nextR < 1 || nextR > (consoleConfig.n_row - 2) ||
+                nextC < 1 || nextC > (consoleConfig.n_column - 2))
+            {
+                player.isDead = true;
                 return;
+            }
 
-            if (nextR > (consoleConfig.n_row - 2))
-                return;
-
-            if (nextC <  1)
-                return;
-
-            if (nextC > (consoleConfig.n_column - 2))
-                return;
+            // Self-collision: check all body segments except the tail (it moves away this frame)
+            int checkCount = player.playerBodies.Count > 0 ? player.playerBodies.Count - 1 : 0;
+            for (int i = 0; i < checkCount; i++)
+            {
+                var body = player.playerBodies[i];
+                if (nextR == body.pos_row && nextC == body.pos_col)
+                {
+                    player.isDead = true;
+                    return;
+                }
+            }
 
             //Mi porto con me tutto il corpo
             player.playerBodies.Insert(0, new PlayerBody()

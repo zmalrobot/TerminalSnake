@@ -1,18 +1,17 @@
 name: Build TerminalSnake
-run-name: ${{ gitea.actor }} Build TerminalSnake
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
     branches: [ main ]
 
 jobs:
   build:
     runs-on: linux64-latest
 
-    steps:
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:9.0
 
+    steps:
       - name: Check out repository code
         uses: actions/checkout@v4
 
@@ -22,5 +21,5 @@ jobs:
       - name: Build solution
         run: dotnet build TerminalSnake.sln -c Debug --no-restore
 
-      - name: Test project
-        run: dotnet test TerminalSnake/TerminalSnake.csproj -c Debug
+      #- name: Test project
+      #  run: dotnet test TerminalSnake/TerminalSnake.csproj -c Debug

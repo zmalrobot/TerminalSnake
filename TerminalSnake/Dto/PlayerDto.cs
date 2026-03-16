@@ -6,6 +6,7 @@ namespace TerminalSnake.Dto
     public class PlayerDto
     {
         public int points { get; set; } = 0;
+        public bool isDead { get; set; } = false;
 
         public int pos_row { get; set; } = 5;
         public int pos_col { get; set; } = 5;

@@ -8,9 +8,29 @@ namespace TerminalSnake.Rendering
 {
     public class ConsoleConfig
     {
-        public int n_column { get; set; } = 100;
-        public int n_row { get; set; } = 20;
+        // Lines consumed outside the game grid: 1 score/header line.
+        private const int HeaderOverhead = 1;
+
+        public int n_column { get; set; }
+        public int n_row    { get; set; }
         public int target_fps { get; set; } = 10;
+
+        public ConsoleConfig()
+        {
+            try
+            {
+                // Leave 1 column so the rightmost char never causes an unwanted wrap.
+                // Leave 1 extra row as a scroll buffer.
+                n_column = Math.Max(30, Console.WindowWidth  - 1);
+                n_row    = Math.Max(10, Console.WindowHeight - HeaderOverhead - 1);
+            }
+            catch
+            {
+                // Fallback when terminal size is unavailable (e.g. redirected I/O).
+                n_column = 100;
+                n_row    = 20;
+            }
+        }
 
         public Dictionary<ConsoleColors, string> color_mapping = new Dictionary<ConsoleColors, string>()
         {
